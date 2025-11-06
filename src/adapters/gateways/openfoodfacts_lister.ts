@@ -14,7 +14,30 @@ import { ProductLister } from '../../domain/ports/products/lister'
 declare const fetch: any
 
 export class OpenFoodFactsLister implements ProductLister {
-  async list(_query: string, _limit: number = 5): Promise<Product[]> {
-    throw new Error('TODO Etape 6: OpenFoodFactsLister.list')
+  async list(query: string, limit: number = 5): Promise<Product[]> {
+    try {
+      const encoded = encodeURIComponent(query)
+      const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encoded}&search_simple=1&action=process&json=1&page_size=${limit}`
+
+      const result = await fetch(url)
+      if (!result.ok) return []
+
+      const data = await result.json()
+      if (!data?.products || !Array.isArray(data.products)) return []
+
+      const items: Product[] = data.products
+        .map((product: any) => {
+          const id = product.code || product._id
+          const name = product.product_name || product.generic_name || product.brands
+          if (!id || !name) return null
+          return { id, name, stock: 0 } as Product
+        })
+        .filter((x: Product | null): x is Product => x !== null)
+
+      return items
+    } catch {
+      // Erreur réseau ou JSON invalide → []
+      return []
+    }
   }
 }
