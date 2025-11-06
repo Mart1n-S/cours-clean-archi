@@ -3,6 +3,8 @@ import { buildContainer } from '../../app/container'
 import { loadConfig } from '../config/config'
 import { buildProductsController } from '../../adapters/controllers/products_controller'
 import { productsRouter } from './routes/products_routes'
+import { healthRouter } from './routes/health_route'
+import { searchRouter } from './routes/search_route'
 
 export async function buildHttpApp(): Promise<Application> {
   const app = express()
@@ -16,7 +18,14 @@ export async function buildHttpApp(): Promise<Application> {
   app.use(express.json())
 
   // Routes (Exercice 7 laissera /health, /search et le 404 générique à implémenter)
+  app.use(healthRouter())
+  app.use(searchRouter(controller))
   app.use(productsRouter(controller))
+
+  // 404 générique JSON
+  app.use((_req, response) => {
+    response.status(404).json({ error: 'not_found' })
+  })
 
   // Error handler (invalid JSON, generic fallback)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

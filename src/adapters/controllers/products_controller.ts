@@ -55,8 +55,8 @@ export function buildProductsController(dependences: {
     async buy(id: string, body: any): Promise<StatusBody> {
       try {
         const { quantity } = body
-        const updated = await dependences.buyProduct.exec(id, quantity)
-        return { status: 200, body: updated }
+        const updatedProduct = await dependences.buyProduct.exec(id, quantity)
+        return { status: 200, body: updatedProduct }
       } catch (error) {
         return {
           status: errorToStatus(error),

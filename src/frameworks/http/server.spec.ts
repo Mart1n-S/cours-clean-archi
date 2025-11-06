@@ -28,7 +28,7 @@ function req(method: string, url: string, body?: any): Promise<{ status: number,
 }
 
 // Exercice 7 — Implémenter la route /health
-describe.skip('Exercice 7 — HTTP health route', () => {
+describe('Exercice 7 — HTTP health route', () => {
   let httpServer: http.Server
   let baseUrl: string
   let skipSuite = false

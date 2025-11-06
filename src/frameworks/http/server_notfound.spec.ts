@@ -26,7 +26,7 @@ function req(method: string, url: string): Promise<{ status: number, data: any }
 }
 
 // Exercice 7 — Implémenter les routes not found et HEAD/health
-describe.skip('Exercice 7 — HTTP not found', () => {
+describe('Exercice 7 — HTTP not found', () => {
   let httpServer: http.Server
   let baseUrl: string
   let skipSuite = false
