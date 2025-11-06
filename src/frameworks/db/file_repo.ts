@@ -23,7 +23,7 @@ export class FileRepo implements ProductReader, ProductWriter, ProductReaderAll 
   // private loaded = false
 
   private db: Map<string, Product> = new Map()
-  private loaded = false
+  private isLoaded = false
 
   constructor(private filePath: string) { }
 
@@ -35,7 +35,7 @@ export class FileRepo implements ProductReader, ProductWriter, ProductReaderAll 
     // 3) JSON.parse → StoreShape
     // 4) pour chaque entrée valide → this.db.set(id, product)
     // 5) en cas d'erreur (ENOENT, JSON invalide) → démarrer avec une Map vide
-    if (this.loaded) return
+    if (this.isLoaded) return
 
     try {
       const content = await fs.readFile(this.filePath, 'utf-8')
@@ -52,7 +52,7 @@ export class FileRepo implements ProductReader, ProductWriter, ProductReaderAll 
       this.db = new Map()
     }
 
-    this.loaded = true
+    this.isLoaded = true
   }
 
   // Persistance disque à chaque save
