@@ -7,10 +7,10 @@ type StatusBody = { status: number, body: unknown }
 
 // Étape 4 — À implémenter: mapping entre erreurs métier et codes HTTP
 // Indices dans src/adapters/controllers/products_controller.spec.ts
-function errorToStatus(err: unknown): number {
-  if (!(err instanceof Error)) return 500
+function errorToStatus(error: unknown): number {
+  if (!(error instanceof Error)) return 500
 
-  switch (err.message) {
+  switch (error.message) {
     case 'invalid_product':
     case 'invalid_stock':
     case 'invalid_qty':
@@ -24,7 +24,7 @@ function errorToStatus(err: unknown): number {
   }
 }
 
-export function buildProductsController(deps: {
+export function buildProductsController(dependences: {
   addProduct: AddProduct
   getProduct: GetProduct
   buyProduct: BuyProduct
@@ -34,47 +34,40 @@ export function buildProductsController(deps: {
     async add(body: any): Promise<StatusBody> {
       try {
         const { id, name, stock } = body
-        await deps.addProduct.exec({ id, name, stock })
+        await dependences.addProduct.exec({ id, name, stock })
         return { status: 201, body: { id, name, stock } }
-      } catch (err) {
+      } catch (error) {
         return {
-          status: errorToStatus(err),
-          body: { error: (err as Error).message },
+          status: errorToStatus(error),
+          body: { error: (error as Error).message },
         }
       }
     },
 
     async get(id: string): Promise<StatusBody> {
-      try {
-        const product = await deps.getProduct.exec(id)
-        if (!product) {
-          return { status: 404, body: { error: 'not_found' } }
-        }
-        return { status: 200, body: product }
-      } catch (err) {
-        return {
-          status: errorToStatus(err),
-          body: { error: (err as Error).message },
-        }
+      const product = await dependences.getProduct.exec(id)
+      if (!product) {
+        return { status: 404, body: { error: 'not_found' } }
       }
+      return { status: 200, body: product }
     },
 
     async buy(id: string, body: any): Promise<StatusBody> {
       try {
         const { quantity } = body
-        const updated = await deps.buyProduct.exec(id, quantity)
+        const updated = await dependences.buyProduct.exec(id, quantity)
         return { status: 200, body: updated }
-      } catch (err) {
+      } catch (error) {
         return {
-          status: errorToStatus(err),
-          body: { error: (err as Error).message },
+          status: errorToStatus(error),
+          body: { error: (error as Error).message },
         }
       }
     },
 
     async search(query: string, limit?: number): Promise<StatusBody> {
       try {
-        const products = await deps.searchProducts.exec(query, limit)
+        const products = await dependences.searchProducts.exec(query, limit)
         return { status: 200, body: products }
       } catch {
         return { status: 500, body: { error: 'fetch_failed' } }
