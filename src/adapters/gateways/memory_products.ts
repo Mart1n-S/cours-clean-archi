@@ -8,16 +8,17 @@ import { ProductReaderAll } from '../../domain/ports/products/list_all'
 // Voir les attentes dans: src/adapters/gateways/memory_products.spec.ts
 export class MemoryProductsGateway implements ProductReader, ProductWriter, ProductReaderAll {
   // Suggestion: utilisez une Map<string, Product>
+  private storage: Map<string, Product> = new Map()
 
-  getById(_id: string): Product | null {
-    throw new Error('TODO Etape 1: MemoryProductsGateway.getById')
+  getById(id: string): Product | null {
+    return this.storage.get(id) ?? null
   }
 
-  save(_product: Product): void {
-    throw new Error('TODO Etape 1: MemoryProductsGateway.save')
+  save(product: Product): void {
+    this.storage.set((product as any).id, product)
   }
 
   listAll(): Product[] {
-    throw new Error('TODO Etape 1: MemoryProductsGateway.listAll')
+    return Array.from(this.storage.values())
   }
 }
