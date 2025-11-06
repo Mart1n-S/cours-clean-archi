@@ -17,7 +17,7 @@ function tmpFile() {
 // - listAll() retourne le contenu en mémoire
 // Indices d'implémentation dans src/frameworks/db/file_repo.ts
 // Pour activer cette étape: remplacez describe.skip par describe.
-describe.skip('Étape 5 — FileRepo', () => {
+describe('Étape 5 — FileRepo', () => {
   it('persists on each save and reloads', async () => {
     const file = await tmpFile()
     const repo1 = new FileRepo(file)
