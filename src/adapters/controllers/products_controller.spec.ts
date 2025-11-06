@@ -1,7 +1,7 @@
 import { buildProductsController } from 'src/adapters/controllers/products_controller'
 
 class OkUseCases {
-  async exec(_: any, __?: any): Promise<any> {}
+  async exec(_: any, __?: any): Promise<any> { }
 }
 
 // Étape 4 — Controller
@@ -11,7 +11,7 @@ class OkUseCases {
 // - buy(id, body): parse {quantity}; erreurs 'invalid_qty' -> 400, 'insufficient_stock' -> 409, 'not_found' -> 404
 // - search(query, limit): délègue au use case; 200 si ok; 500 en cas d’erreur
 // Pour activer cette étape: remplacez describe.skip par describe.
-describe.skip('Étape 4 — ProductsController', () => {
+describe('Étape 4 — ProductsController', () => {
   it('maps add errors to http statuses', async () => {
     const addProduct = { exec: async () => { throw new Error('invalid_product') } } as any
     const controller = buildProductsController({ addProduct, getProduct: new OkUseCases() as any, buyProduct: new OkUseCases() as any, searchProducts: new OkUseCases() as any })

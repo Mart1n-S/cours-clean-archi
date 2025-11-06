@@ -15,7 +15,7 @@ class FakeLister {
 
 // Étape 4 — SearchProducts
 // Pour activer cette étape de l'exercice: remplacez describe.skip par describe.
-describe.skip('Étape 4 — SearchProducts', () => {
+describe('Étape 4 — SearchProducts', () => {
   it('returns filtered list from lister port', async () => {
     const useCase = new SearchProducts(new FakeLister() as any)
     const result = await useCase.exec('a')

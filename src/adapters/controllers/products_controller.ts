@@ -7,28 +7,78 @@ type StatusBody = { status: number, body: unknown }
 
 // Étape 4 — À implémenter: mapping entre erreurs métier et codes HTTP
 // Indices dans src/adapters/controllers/products_controller.spec.ts
-function errorToStatus(_err: unknown): number {
-  throw new Error('TODO Etape 4: errorToStatus')
+function errorToStatus(err: unknown): number {
+  if (!(err instanceof Error)) return 500
+
+  switch (err.message) {
+    case 'invalid_product':
+    case 'invalid_stock':
+    case 'invalid_qty':
+      return 400
+    case 'not_found':
+      return 404
+    case 'insufficient_stock':
+      return 409
+    default:
+      return 500
+  }
 }
 
-export function buildProductsController(_deps: {
+export function buildProductsController(deps: {
   addProduct: AddProduct
   getProduct: GetProduct
   buyProduct: BuyProduct
   searchProducts: SearchProducts
 }) {
   return {
-    async add(_body: any): Promise<StatusBody> {
-      throw new Error('TODO Etape 4: controller.add')
+    async add(body: any): Promise<StatusBody> {
+      try {
+        const { id, name, stock } = body
+        await deps.addProduct.exec({ id, name, stock })
+        return { status: 201, body: { id, name, stock } }
+      } catch (err) {
+        return {
+          status: errorToStatus(err),
+          body: { error: (err as Error).message },
+        }
+      }
     },
-    async get(_id: string): Promise<StatusBody> {
-      throw new Error('TODO Etape 4: controller.get')
+
+    async get(id: string): Promise<StatusBody> {
+      try {
+        const product = await deps.getProduct.exec(id)
+        if (!product) {
+          return { status: 404, body: { error: 'not_found' } }
+        }
+        return { status: 200, body: product }
+      } catch (err) {
+        return {
+          status: errorToStatus(err),
+          body: { error: (err as Error).message },
+        }
+      }
     },
-    async buy(_id: string, _body: any): Promise<StatusBody> {
-      throw new Error('TODO Etape 4: controller.buy')
+
+    async buy(id: string, body: any): Promise<StatusBody> {
+      try {
+        const { quantity } = body
+        const updated = await deps.buyProduct.exec(id, quantity)
+        return { status: 200, body: updated }
+      } catch (err) {
+        return {
+          status: errorToStatus(err),
+          body: { error: (err as Error).message },
+        }
+      }
     },
-    async search(_query: string, _limit?: number): Promise<StatusBody> {
-      throw new Error('TODO Etape 4: controller.search')
-    }
+
+    async search(query: string, limit?: number): Promise<StatusBody> {
+      try {
+        const products = await deps.searchProducts.exec(query, limit)
+        return { status: 200, body: products }
+      } catch {
+        return { status: 500, body: { error: 'fetch_failed' } }
+      }
+    },
   }
 }
