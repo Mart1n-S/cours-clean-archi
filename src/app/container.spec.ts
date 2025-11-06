@@ -9,7 +9,7 @@ function tmpFile() {
 
 // Étape 7 — câblage container (persistance fichier)
 // Pour activer cette étape: remplacez describe.skip par describe.
-describe.skip('Étape 7 — container wiring', () => {
+describe('Étape 7 — container wiring', () => {
   it('persiste dans le fichier passé au container', async () => {
     const filePath = await tmpFile()
     const container = buildContainer({ storeFile: filePath })

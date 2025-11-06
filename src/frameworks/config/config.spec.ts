@@ -9,7 +9,7 @@ async function tmpDir() {
 
 // Étape 7 — chargeur de config
 // Pour activer cette étape: remplacez describe.skip par describe.
-describe.skip('Étape 7 — config loader', () => {
+describe('Étape 7 — config loader', () => {
   it('prefers env var over file and default', async () => {
     const dir = await tmpDir()
     await fs.mkdir(path.join(dir, 'config'))

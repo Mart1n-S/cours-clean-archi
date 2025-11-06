@@ -25,7 +25,7 @@ function req(method: string, url: string): Promise<{ status: number, data: any }
 }
 
 // Exercice 7 — Implémenter la route /search
-describe.skip('Exercice 7 — HTTP search route', () => {
+describe('Exercice 7 — HTTP search route', () => {
   it('returns items using mocked controller', async () => {
     const portAvailable = await new Promise<boolean>(resolve => {
       const probeServer = net.createServer()
@@ -42,7 +42,7 @@ describe.skip('Exercice 7 — HTTP search route', () => {
           add: async () => ({ status: 201, body: {} }),
           get: async () => ({ status: 404, body: { error: 'not_found' } }),
           buy: async () => ({ status: 200, body: {} }),
-          search: async () => ({ status: 200, body: [ { id: 'x', name: 'X', stock: 0 } ] })
+          search: async () => ({ status: 200, body: [{ id: 'x', name: 'X', stock: 0 }] })
         })
       }))
       const { startServer } = await import('src/frameworks/http/server')
