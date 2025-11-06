@@ -14,7 +14,7 @@ class FakeRepo implements ProductReaderAll {
 
 // Étape 3 — Implémentez ListStoredProducts
 // Pour activer cette étape: remplacez describe.skip par describe.
-describe.skip('Étape 3 — ListStoredProducts', () => {
+describe('Étape 3 — ListStoredProducts', () => {
   it('lists products from repository', async () => {
     const useCase = new ListStoredProducts(new FakeRepo())
     const result = await useCase.exec()

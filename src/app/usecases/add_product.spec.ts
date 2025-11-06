@@ -4,7 +4,7 @@ import { GetProduct } from 'src/app/usecases/get_product'
 
 // Étape 2 — Implémentez AddProduct et GetProduct
 // Pour activer cette étape: remplacez describe.skip par describe.
-describe.skip('Étape 2 — Use cases Add/Get', () => {
+describe('Étape 2 — Use cases Add/Get', () => {
   it('ajoute un produit et le retrouve', async () => {
     const repository = new MemoryProductsGateway()
     const addProduct = new AddProduct(repository)

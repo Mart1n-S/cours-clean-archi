@@ -16,7 +16,7 @@ class OtherRepo implements ProductReader, ProductWriter {
 
 // Étape 2 — Vérifier la substitution de dépôt (DIP)
 // Pour activer cette étape: remplacez describe.skip par describe.
-describe.skip('Étape 2 — Substitution de dépôt', () => {
+describe('Étape 2 — Substitution de dépôt', () => {
   it('fonctionne avec une autre implémentation', async () => {
     const repository = new OtherRepo()
     const addProduct = new AddProduct(repository)

@@ -4,7 +4,7 @@ import { GetProduct } from 'src/app/usecases/get_product'
 
 // Étape 2 — Implémentez GetProduct (et AddProduct pour préparer les données)
 // Pour activer cette étape: remplacez describe.skip par describe.
-describe.skip('Étape 2 — GetProduct', () => {
+describe('Étape 2 — GetProduct', () => {
   it('retourne null si absent', async () => {
     const repository = new MemoryProductsGateway()
     const getProduct = new GetProduct(repository)

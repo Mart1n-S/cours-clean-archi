@@ -4,7 +4,7 @@ import { BuyProduct } from 'src/app/usecases/buy_product'
 
 // Étape 3 — Implémentez BuyProduct
 // Pour activer cette étape: remplacez describe.skip par describe.
-describe.skip('Étape 3 — BuyProduct', () => {
+describe('Étape 3 — BuyProduct', () => {
   it('diminue le stock', async () => {
     const repository = new MemoryProductsGateway()
     const addProduct = new AddProduct(repository)
